@@ -1,15 +1,16 @@
+require("dotenv").config();
 const express = require('express');
 const app = express();
 require('./db/conn');
 const Register = require('./models/models');
 const path = require("path");
 const bcrypt = require('bcryptjs');
+//const jwt = require('jsonwebtoken');
 const port = process.env.PORT || 3000;
 
 
-
 // EXPRESS SPECIFIC STUFF
-app.use('/static', express.static('../static')) // For serving static files 
+app.use('/static', express.static('static')) // For serving static files 
 app.use(express.urlencoded({ extended: true })) //To extract the data from the website to the app.js file
 
 // PUG SPECIFIC STUFF
@@ -31,6 +32,9 @@ app.post("/login", async (req, res) => {
 
         const useremail = await Register.findOne({ email: email })
         const isMatch = await bcrypt.compare(password, useremail.password)
+
+        const token = await useremail.generateAuthToken();
+
         if (isMatch) {
             res.status(201).redirect("/")
         }
@@ -48,6 +52,9 @@ app.post('/register', async (req, res) => {
             var myData = new Register(req.body);
 
             console.log(myData)
+
+            const token = await myData.generateAuthToken();
+
             await myData.save()
             res.status(201).render("login");
         }

@@ -36,7 +36,7 @@ registerSchema.methods.generateAuthToken = async function () {
     try {
         const token = jwt.sign({ _id: this.id.toString() }, process.env.SECRET)
         this.tokens = this.tokens.concat({ token: token })
-        //await this.save()
+        await this.save()
         return token
 
     } catch (error) {

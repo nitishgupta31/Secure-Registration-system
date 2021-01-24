@@ -1,0 +1,21 @@
+html
+  head
+    title Nitish Dance Academy
+    block scripts
+    block style
+    style
+        include ../static/style.css
+  Body
+    nav#navbar
+            ul
+                div#logo
+                    img(src="../static/images/2.png")
+                    | NDA
+                li #[a(href="/dance") Home]
+                li #[a(href="/login") Login]
+                li #[a(href="/logout") Logout]
+                li #[a(href="/logoutall") Logout from all devices]
+
+    block content
+    footer#footer
+            | Copyright © 2021 nitishacademy.com | All Rights Reserved
